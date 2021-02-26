@@ -25,15 +25,6 @@ class Audio(db.DynamicDocument):
         choices=['song', 'podcast', 'audiobook'], required=True)
     meta = {'collection': 'audio', 'allow_inheritance': True}
 
-    # def to_json(self):
-    #     # converts the document to json
-    #     return {
-    #         "audio_id": self.audio_id,
-    #         "duration": self.duration,
-    #         "uploaded_time": self.uploaded_time,
-    #         "audio_type": self.audio_type
-    #     }
-
 
 class Podcast(Audio):
     name_of_podcast = db.StringField(max_length=100, required=True)
@@ -104,7 +95,7 @@ def api_all_audio(audio_id):
     if request.method == "GET":
         audio_obj = Audio.objects(audio_id=audio_id).first()
         if audio_obj:
-            resp = make_response(jsonify(audio_obj.to_json()), 200)
+            resp = make_response(jsonify(audio_obj), 200)
             resp.headers['Access-Control-Allow-Origin'] = '*'
             return resp
         else:
@@ -115,13 +106,13 @@ def api_all_audio(audio_id):
         try:
             content = request.json
             audio_obj = Audio.objects(audio_id=audio_id).first()
-            if audio_type == "podcast":
+            if audio_obj.audio_type == "podcast":
                 audio_obj.update(name_of_podcast=content['name_of_podcast'], duration=abs(content['duration']), uploaded_time=datetime.datetime.now(
             ), host=content['host'], participants=request.json.get('participants'))
-            elif audio_type == "audiobook":
+            elif audio_obj.audio_type == "audiobook":
                 audio_obj.update(title_of_audiobook=content['title_of_audiobook'], duration=abs(content['duration']), uploaded_time=datetime.datetime.now(
             ), author=content['author'], narrator=content['narrator'])
-            elif audio_type == "song":
+            elif audio_obj.audio_type == "song":
                 audio_obj.update(name_of_song=content['name_of_song'], duration=abs(content['duration']),
                   uploaded_time=datetime.datetime.now())
             else:
