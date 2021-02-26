@@ -1,14 +1,19 @@
+import os
 from flask import Flask, request, jsonify, make_response
 from flask_mongoengine import MongoEngine
-from constants import password
 import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
 database_name = "test"
 
+password_db = os.getenv("PASSWORD")
+
 DB_URI = "mongodb+srv://test:{}@cluster0.iiyzw.mongodb.net/{}?retryWrites=true&w=majority".format(
-    password, database_name)
+    password_db, database_name)
 
 app.config["MONGODB_HOST"] = DB_URI
 
