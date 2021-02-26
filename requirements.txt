@@ -1,0 +1,7 @@
+Flask>=1.1.2
+python-dotenv>=0.14.0
+requests>=2.23.0
+mongoengine==0.22.1
+dnspython==2.1.0 
+urllib3>=1.25.9
+flask-mongoengine==1.0.0
