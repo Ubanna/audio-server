@@ -3,3 +3,4 @@ venv
 # misc
 .env
 __pycache__
+env
